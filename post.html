@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <style>
+        a {
+  text-decoration: none; /* Removes the underline from all links */}
+  @media(max-width:790px){
+.nav a{
+    display: none !important;;
+ }
+  }
+ 
+
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/AMR2010M/butterfly-css@latest/attributes.css">
+</head>
+<body>
+     <ul navbar bp twhite mb-50 class="nav">
+<h1 tbp message blue-50 p-10  >Mc</h1>
+
+<a href="/profile" twhite tsmall>profile </a>
+<a href="/signin"twhite tsmall >signin </a>
+<a href="/signout"twhite tsmall>signout </a>
+<a href="/signup"twhite tsmall>sign up </a>
+    </ul>
+    <div w-full min-h-600 white id="x"  columns>
+
+        
+    </div>
+    <section class="comments" columns id="c">
+    <textarea w-70p h-300 rounded green-50 id="text"  mb-50 tsmall placeholder="write a comment"></textarea>
+    <button btn="red" id="submit">submit</button>
+    </section>
+    <script type="module">
+const postId = new URLSearchParams(window.location.search).get('id');
+    const x=document.getElementById('x');
+     const c=document.getElementById('c');
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+    const supabaseUrl = 'https://skhatgfvgvyociqfamsp.supabase.co';
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNraGF0Z2Z2Z3Z5b2NpcWZhbXNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5NDY3MjMsImV4cCI6MjA3NTUyMjcyM30.m0L9G26jHf79KNL_YCDNJHS2hWYHuJ4WCzLAHKhj2XI";
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+const {data:{user}}= await supabase.auth.getUser();
+if(user){
+    console.log('hello');
+}
+else{
+    window.location.href="/signin";
+
+}
+ async function fetchpoems () {
+    
+
+const{data,error}=await supabase.from('poems').select('title,author,poem,img').eq('id',postId).single();
+if(error){
+    console.error(error);
+
+}
+else{
+     
+   
+
+    const poem=data;
+    const mypoem=`<div columns center style='white-space: pre-wrap;position: relative;' mb-50 center w-70p min-h-400 sblue rounded blue-50 p-30 ><h1 center tblue w-90p >${poem.title}</h1><p tsmall tblack>${poem.poem}</p><img w-50p h-400 center src='${poem.img}' > <p center >by ${poem.author}</p></div>`;
+    
+x.innerHTML+=mypoem;
+   }
+}
+
+ 
+ fetchpoems();
+ var submit=document.getElementById('submit');
+ submit.onclick= async function(){
+     
+    var text=document.getElementById('text').value;
+
+
+
+    const {error}=  await supabase.from('comments').insert({
+text: text, 
+post_id: postId ,
+ user_id: user.id,
+ user_name:user.email
+    });
+    if(error){
+        alert(error);
+    }
+    else{
+         alert('success');
+    }
+}
+ async function getcomments() {
+    
+
+const{data,error}=await supabase.from('comments').select('*').eq('post_id',postId);
+if(error){
+    console.error(error);
+}
+else{
+   for( const poem of data){
+    const comment=`<a p-30  w-70p tblack><div   class='post' center b-green mb-50 center  rounded green-50 p-30 > <h1 center tblue  >${poem.text}</h1> <p bottom center style="position: absolute;">by ${poem.user_name}</p></div></a>`;
+c.innerHTML+=comment;
+}
+}
+ }
+ getcomments();
+</script>
+</body>
+
+</html>

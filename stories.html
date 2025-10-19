@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/AMR2010M/butterfly-css@latest/attributes.css">
+    <style>
+        a {
+  text-decoration: none; /* Removes the underline from all links */}
+  @media(max-width:790px){
+.nav a{
+    display: none !important;;
+ }
+  }
+ 
+
+    </style>
+</head>
+<body  style="position: relative;  margin: 0px; padding: 0px;" columns >
+    <ul navbar bp twhite mb-50 class="nav">
+
+<h1 tbp message blue-50 p-10  >Mc</h1>
+
+<a href="/profile" twhite tsmall>profile </a>
+<a href="/signin"twhite tsmall >signin </a>
+<a href="/signout"twhite tsmall>signout </a>
+<a href="/signup"twhite tsmall>sign up </a>
+    </ul>
+    <h1 tbp style="font-size: 40px;" center monospace>MUSLIM COMMUNITY</h1>
+ <a href="/create"><button btn="white" center tbp  b-blue >create post</button></a>
+
+    <div w-full style="min-height: 100%;" min-h-800 white id="x"  mt-50  columns>
+<div space></div>
+
+        
+    </div>
+    <footer bottom w-full style="height:400px ; position: static;" bp twhite columns>
+        <h1 center>muslim community</h1>
+    <a href="create" center twhite>create </a>
+<a href="signin"twhite center>signin </a>
+<a href="signout"twhite center>signout </a>
+<a href="signup"twhite center>sign up </a>
+    </footer>
+</body>
+<script type="module">
+const x=document.getElementById('x');
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+    const supabaseUrl = 'https://skhatgfvgvyociqfamsp.supabase.co';
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNraGF0Z2Z2Z3Z5b2NpcWZhbXNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5NDY3MjMsImV4cCI6MjA3NTUyMjcyM30.m0L9G26jHf79KNL_YCDNJHS2hWYHuJ4WCzLAHKhj2XI";
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+const {data:{user}}= await supabase.auth.getUser();
+if(user){
+    console.log('hello');
+}
+else{
+    window.location.href="/signin";
+
+}
+ async function fetchpoems () {
+    
+
+const{data,error}=await supabase.from('story_db').select('video,created_at,title').order('created_at', { ascending: false });;
+if(error){
+    console.error(error);
+}
+else{
+   for( const story of data){
+  
+   
+    const mystory=`<video autoplay controls center src="${story.video}" w-70p h-400></video><h1 center>${story.title}</h1><h1 center>${story.author}/${story.creatred_at}</h1>`;
+x.innerHTML+=mystory;
+
+
+}
+
+}
+ }
+ fetchpoems();
+
+</script>
+</html>

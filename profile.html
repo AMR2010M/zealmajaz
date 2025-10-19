@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/AMR2010M/butterfly-css@latest/attributes.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        a {
+  text-decoration: none; /* Removes the underline from all links */}
+  .post{
+    width:30%;
+ }
+  @media(max-width:790px){
+.nav a{
+    display: none !important;;
+ }
+ .post{
+    width:70%;
+ }
+  }
+ 
+
+    </style>
+</head>
+<body   style="position: relative;  margin: 0px; padding: 0px;" columns >
+    <ul navbar bp twhite mb-50 class="nav">
+
+<h1 tbp message blue-50 p-10  >Mc</h1>
+
+<a href="/profile" twhite tsmall>profile </a>
+<a href="/signin"twhite tsmall >signin </a>
+<a href="/signout"twhite tsmall>signout </a>
+<a href="/signup"twhite tsmall>sign up </a>
+    </ul>
+    <div id="profilecontainer" w-100p></div>
+  
+
+
+    <div w-full style="min-height: 100%;" min-h-800 white id="x"  mt-50 >
+<div space></div>
+
+        
+    </div>
+    <footer bottom w-full style="height:400px ; position: static;" bp twhite columns>
+        <h1 center>muslim community</h1>
+    <a href="create" center twhite>create </a>
+<a href="signin"twhite center>signin </a>
+<a href="signout"twhite center>signout </a>
+<a href="signup"twhite center>sign up </a>
+    </footer>
+</body>
+<script type="module">
+const x=document.getElementById('x');
+const con=document.getElementById('profilecontainer');
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+    const supabaseUrl = 'https://skhatgfvgvyociqfamsp.supabase.co';
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNraGF0Z2Z2Z3Z5b2NpcWZhbXNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5NDY3MjMsImV4cCI6MjA3NTUyMjcyM30.m0L9G26jHf79KNL_YCDNJHS2hWYHuJ4WCzLAHKhj2XI";
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+const {data:{user}}= await supabase.auth.getUser();
+if(user){
+    console.log('hello');
+}
+else{
+    window.location.href="/signin";
+
+}
+ async function fetchpoems () {
+    
+const{data:profile,error:pe}=await supabase.from('profiles').select('profile_img,bio,user_name').eq('user_email',user.email).single();
+const profilediv=`<div w-full bp min-h-300 columns twhite ><h1 tlarge>${profile.user_name}</h1><img w-200 h-200 style='border-radius:200px;'  src="${profile.profile_img}"><p tsmall>${profile.bio}</p> </div>`;
+con.innerHTML+=profilediv;
+const{data,error}=await supabase.from('poems').select('title,author,poem,id,img,likes,created_at').eq('author',user.email).order('created_at', { ascending: false });;
+if(error){
+    console.error(error);
+}
+else{
+   for( const poem of data){
+    if(poem.img){
+    const lines = poem.poem.split('\n');
+    const hook=lines[0]+".........";
+    const mypoem=`<div class="bg-gray-100 dark:bg-gray-900 min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-white dark:bg-gray-800 border linkedin-border rounded-lg shadow-sm max-w-xl w-full overflow-hidden">
+      <div class="p-4">
+
+        <!-- Post Header -->
+        <div class="flex justify-between items-start mb-3">
+          <div class="flex items-center space-x-3">
+            <img class="w-12 h-12 rounded-full object-cover flex-shrink-0"
+                 src="${profile.profile_img}"
+                 alt="User Avatar">
+            <div class="text-sm min-w-0">
+              <a href="#" class="font-semibold text-primary hover:underline hover:text-blue-700 dark:hover:text-blue-400">
+               ${poem.author}
+              </a>
+              <p class="text-xs text-secondary truncate">
+               
+              </p>
+              <p class="text-xs text-secondary flex items-center">
+                ${poem.created_at} • Edited • 
+                <svg class="w-3 h-3 text-secondary" fill="currentColor" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8zm8-6.5a6.5 6.5 0 1 1 0 13 6.5 6.5 0 0 1 0-13zM6 8a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V8zm5.472.088a1.144 1.144 0 0 0-1.944-.972 1.144 1.144 0 1 0 1.944.972zM4.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
+              </p>
+            </div>
+          </div>
+          <button aria-label="More options" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full p-1.5 -mt-1 -mr-1.5">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+          </button>
+        </div>
+
+        <!-- Post Content -->
+        <div class="text-sm text-primary mb-3 break-words">
+            <p>${poem.poem}}<a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">#cloudnative</a> <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">#kubernetes</a> <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">#serverless</a> <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline">#devops</a></p>
+        </div>
+
+        <!-- Media (Optional - Example Image) -->
+        <div class="mb-3 -mx-4 sm:mx-0 sm:rounded-lg overflow-hidden">
+             <img src="${poem.img}"
+                 alt="Post media content" class="w-full object-cover">
+        </div>
+
+        <!-- Engagement Stats -->
+        <div class="flex items-center justify-between text-xs text-secondary mb-2">
+            <div class="flex items-center space-x-1">
+                <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path xmlns="http://www.w3.org/2000/svg" d="M19.2412 4.48567C19.4084 4.45613 19.9017 4.38771 20.2409 4.80362C20.58 5.21954 20.4137 5.68895 20.3511 5.84684C20.2781 6.03091 20.1551 6.24781 20.0394 6.45186L14.2096 16.7397C13.7833 17.492 13.4223 18.1292 13.0837 18.5655C12.7444 19.0026 12.2569 19.4636 11.5438 19.4106C10.8307 19.3576 10.4168 18.8296 10.1458 18.3471C9.87545 17.8656 9.61259 17.1821 9.30222 16.375L8.57848 14.4932C8.50596 14.3047 8.46511 14.1997 8.42906 14.1229C8.41301 14.0887 8.40261 14.0706 8.39685 14.0614C8.39411 14.0571 8.39245 14.0548 8.39182 14.0539L8.39101 14.0529L8.39007 14.052L8.38679 14.0492L8.38312 14.0463C8.37454 14.0397 8.35748 14.0276 8.325 14.0083C8.25203 13.965 8.1515 13.9143 7.97081 13.8239L6.98271 13.3299C6.10066 12.8889 5.36544 12.5213 4.86354 12.1752C4.37714 11.8398 3.83065 11.3379 3.88886 10.5671C3.94707 9.7963 4.56273 9.38216 5.09398 9.12362C5.64217 8.85684 6.42424 8.60385 7.36252 8.30033L18.5857 4.66928C18.8089 4.59697 19.0462 4.52011 19.2412 4.48567Z" fill="#000000"/></svg>
+                <span class="hover:text-blue-600 hover:underline cursor-pointer"></span>
+            </div>
+            <div class="space-x-2">
+                <span class="hover:text-blue-600 hover:underline cursor-pointer">41 comments</span>
+                <span>•</span>
+                <span class="hover:text-blue-600 hover:underline cursor-pointer">18 reposts</span>
+            </div>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="border-t linkedin-border pt-2 flex justify-around text-sm font-medium text-gray-600 dark:text-gray-300">
+            <button c aria-label="Like" class=" like flex items-center space-x-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded w-full justify-center transition-colors duration-150">
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" d="M19.1959 6.98709C17.5699 4.89134 14.3061 5.24282 13.1635 7.63669C12.6965 8.61527 11.3035 8.61527 10.8365 7.63669C9.69394 5.24282 6.43011 4.89135 4.8041 6.98709L4.49475 7.38581C3.08665 9.2007 3.28996 11.7888 4.96418 13.3616L11.9168 19.8928C11.9479 19.922 11.9753 19.9477 12 19.9708C12.0247 19.9477 12.0521 19.922 12.0832 19.8928L19.0358 13.3616C20.71 11.7888 20.9133 9.2007 19.5052 7.38581L19.1959 6.98709ZM12 6.62866C13.7697 3.5573 18.1553 3.19885 20.381 6.06759L20.6904 6.46631C22.5728 8.89249 22.301 12.3524 20.0628 14.4548L13.0927 21.0026C12.9885 21.1005 12.8747 21.2075 12.7673 21.2902C12.6438 21.3853 12.4712 21.4954 12.2407 21.5406C12.0818 21.5718 11.9182 21.5718 11.7593 21.5406C11.5288 21.4954 11.3562 21.3853 11.2327 21.2902C11.1253 21.2075 11.0115 21.1005 10.9073 21.0026L3.93717 14.4548C1.69903 12.3524 1.42724 8.8925 3.30962 6.46632L3.61898 6.06759C5.84473 3.19885 10.2303 3.55729 12 6.62866Z" fill="#000000"/></svg>
+                <span id='text${poem.id}'>${poem.likes}</span>
+            </button>
+            <button aria-label="Comment" class="flex items-center space-x-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded w-full justify-center transition-colors duration-150">
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 011.037-.443 48.282 48.282 0 005.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
+                <span>Comment</span>
+            </button>
+             <button aria-label="Repost" class="flex items-center space-x-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded w-full justify-center transition-colors duration-150">
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path xmlns="http://www.w3.org/2000/svg" id="primary" d="M6,14V9A6,6,0,0,1,16.89,5.54" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"/><path xmlns="http://www.w3.org/2000/svg" id="primary-2" data-name="primary" d="M18,10v5A6,6,0,0,1,7.11,18.46" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"/><polyline xmlns="http://www.w3.org/2000/svg" id="primary-3" data-name="primary" points="8 12 6 14 4 12" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"/><polyline xmlns="http://www.w3.org/2000/svg" id="primary-4" data-name="primary" points="16 12 18 10 20 12" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;"/></svg>
+                <span>Repost</span>
+            </button>
+             <button aria-label="Send" class="flex items-center space-x-1.5 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded w-full justify-center transition-colors duration-150">
+                 <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" /></svg>
+                <span>Send</span>
+            </button>
+        </div>
+
+      </div>
+    </div>
+
+</div>`;
+x.innerHTML+=mypoem;
+   }
+
+}
+
+}
+
+ 
+ }
+ fetchpoems();
+
+
+    
+       
+
+ x.addEventListener('click', async (event) => {
+  if (event.target.classList.contains('like')) {
+     const { data:mydata, error } = await supabase.from('poems').select('likes,id').eq('id',event.target.id).single();
+        var updatedlikes=mydata.likes+1;
+const { error: updateError } = await supabase.from('poems').update({likes:updatedlikes }).eq('id', mydata.id);
+document.getElementById('text'+mydata.id).innerText=updatedlikes;
+
+    }
+  }
+ );
+</script>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/AMR2010M/butterfly-css@latest/attributes.css">
+</head>
+<body body>
+    <div w-80p gray  rounded min-h-600 center p-50 nof m-50 flex-column>
+<h1>publish your  post here!</h1>
+<input type="text"placeholder='العنوان' id="title" tbold tmedium w-90p min-h-100 rounded blue-50 m-50>
+<textarea type="text"placeholder='المحتوي' id="poem" w-90p min-h-300 rounded blue-50 m-50 tsmall tbold></textarea>
+<input type="file"placeholder='choose img or file' id="myimg" tbold tmedium m-10 btn="blue" bp center >
+<button type="submit" btn="blue" center id="submit">تاكيد النشر </button>
+    </div>
+</body>
+<script type="module">
+var submit=document.getElementById('submit');
+
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+    const supabaseUrl = 'https://skhatgfvgvyociqfamsp.supabase.co';
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNraGF0Z2Z2Z3Z5b2NpcWZhbXNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5NDY3MjMsImV4cCI6MjA3NTUyMjcyM30.m0L9G26jHf79KNL_YCDNJHS2hWYHuJ4WCzLAHKhj2XI";
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    const {data:{user}}= await supabase.auth.getUser();
+    if(user){
+    console.log('hello'+user);
+}
+else{
+    window.location.href="/signin";
+}
+submit.onclick= async function(){
+     
+    var poem=document.getElementById('poem').value;
+var title=document.getElementById('title').value;
+var myimg=document.getElementById('myimg');
+ const file = myimg.files[0];
+ const {error:imgerror} = await supabase.storage.from('imgs').upload(`public/${file.name}`,file,{ cacheControl: '3600',  upsert: true, });
+ if(imgerror){alert(imgerror)}
+
+ else{const {data:{ publicUrl }} = supabase.storage.from('imgs').getPublicUrl(`public/${file.name}`);
+
+    const {error}=  await supabase.from('poems').insert({
+title: title, 
+poem: poem,
+ user_id: user.id,
+img: publicUrl ,
+ author:user.email
+
+    });
+    if(error){
+        alert(error);
+
+    }
+    else{
+        window.location.href="/index.html";
+    }
+}
+}
+</script>
+</html>

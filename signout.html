@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PoemBook Sign Up</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/AMR2010M/butterfly-css@latest/attributes.css">
+</head>
+<body>
+  <div dblack lwhite center w-80p rounded h-500 p-60 nof flex-column>
+    <h1 tblue>we will miss you bye!</h1>
+   
+    <button type="submit" btn="blue" center id="submit" dark-btn>submit</button>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+    const supabaseUrl = 'https://skhatgfvgvyociqfamsp.supabase.co';
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNraGF0Z2Z2Z3Z5b2NpcWZhbXNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5NDY3MjMsImV4cCI6MjA3NTUyMjcyM30.m0L9G26jHf79KNL_YCDNJHS2hWYHuJ4WCzLAHKhj2XI";
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    const submit = document.getElementById('submit');
+    submit.onclick = async function() {
+    
+      console.log("Client Status:", supabase);
+  
+
+      const { data, error } = await supabase.auth.signOut();
+
+      if (error) {
+        console.error("Supabase Error");
+        alert('failed');
+       
+      } else {
+        alert('Success! ');
+      }
+    }
+  </script>
+</body>
+</html>
+

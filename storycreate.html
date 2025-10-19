@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/AMR2010M/butterfly-css@latest/attributes.css">
+</head>
+<body body>
+    <div w-80p gray  rounded min-h-600 center p-50 nof m-50 flex-column>
+<h1>publish your  post here!</h1>
+<input type="text"placeholder='العنوان' id="title" tbold tmedium w-90p min-h-100 rounded blue-50 m-50>
+
+<input type="file"placeholder='choose img or file' id="myimg" tbold tmedium m-10 btn="blue" bp center >
+<button type="submit" btn="blue" center id="submit">تاكيد النشر </button>
+    </div>
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.1/dist/dotlottie-wc.js" type="module"></script>
+<dotlottie-wc "id='ui' center  src="https://lottie.host/b8d9fc39-dc57-49d2-9bb4-74ae4b22e463/S8etDi82sF.lottie" style="" autoplay loop w-50p h-300></dotlottie-wc>
+</body>
+<script type="module">
+var submit=document.getElementById('submit');
+var ui=document.getElementById('ui');
+ui.style.display='none';
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+    const supabaseUrl = 'https://skhatgfvgvyociqfamsp.supabase.co';
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNraGF0Z2Z2Z3Z5b2NpcWZhbXNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5NDY3MjMsImV4cCI6MjA3NTUyMjcyM30.m0L9G26jHf79KNL_YCDNJHS2hWYHuJ4WCzLAHKhj2XI";
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    const {data:{user}}= await supabase.auth.getUser();
+    if(user){
+    console.log('hello'+user);
+}
+else{
+    window.location.href="/signin";
+}
+submit.onclick= async function(){
+     
+    
+var title=document.getElementById('title').value;
+var myimg=document.getElementById('myimg');
+ const file = myimg.files[0];
+ const {error:imgerror} = await supabase.storage.from('stories').upload(`public/${file.name}`,file,{ cacheControl: '3600',  upsert: true, });
+ if(imgerror){alert(imgerror)}
+
+ else{const {data:{ publicUrl }} = supabase.storage.from('stories').getPublicUrl(`public/${file.name}`);
+ui.style.display='block';
+    const {error}=  await supabase.from('story_db').insert({
+title: title, 
+video:publicUrl,
+ user_id: user.id,
+author:user.email
+
+    });
+    if(error){
+        alert(error);
+ui.style.display='block';
+    }
+    else{
+        window.location.href="/stories.html";
+        ui.style.display='block';
+    }
+}
+}
+</script>
+</html>
