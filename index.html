@@ -58,14 +58,10 @@ const x=document.getElementById('x');
     const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNraGF0Z2Z2Z3Z5b2NpcWZhbXNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5NDY3MjMsImV4cCI6MjA3NTUyMjcyM30.m0L9G26jHf79KNL_YCDNJHS2hWYHuJ4WCzLAHKhj2XI";
 
     const supabase = createClient(supabaseUrl, supabaseKey);
-const {data:{user}}= await supabase.auth.getUser();
-if(user){
-    console.log('hello');
-}
-else{
-    window.location.href="/signin.html";
-
-}
+window.addEventListener('DOMContentLoaded', async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) window.location.href = '/signin.html';
+});
  async function fetchpoems () {
     
 
