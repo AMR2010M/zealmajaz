@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
      <style>
         a {
   text-decoration: none; /* Removes the underline from all links */}
@@ -27,13 +28,59 @@
 <a href="/signup"twhite tsmall>sign up </a>
     </ul>
     <div w-full min-h-600 white id="x"  columns>
-
-        
+<section class="bg-white dark:bg-gray-900">
+    <div class="max-w-3xl mx-auto px-4 py-8 bg-white dark:bg-gray-800 shadow-sm ltr:text-left rtl:text-right">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Comments</h2>
+        <div class="mb-6 space-y-4">
+            <input id="newName" placeholder="Your name" type="text" class="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+            <textarea id="newComment" placeholder="Add your comment..." class="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y bg-white dark:bg-gray-700 text-gray-900 dark:text-white" rows="4"></textarea>
+            <button id="addCommentBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Post Comment</button>
+        </div>
+        <div id="comments-list" class="space-y-4"></div>
     </div>
-    <section class="comments" columns id="c">
-    <textarea w-70p h-300 rounded green-50 id="text"  mb-50 tsmall placeholder="write a comment"></textarea>
-    <button btn="red" id="submit">submit</button>
-    </section>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const commentsListEl = document.getElementById('comments-list');
+        const newNameInput = document.getElementById('newName');
+        const newCommentInput = document.getElementById('newComment');
+        const addCommentBtn = document.getElementById('addCommentBtn');
+
+        let comments = [{ name: 'Sarah Chen', text: 'Great article! Mindful coding really helps me stay focused.', timeAgo: '5 minutes ago' }];
+
+        const renderComments = () => {
+            commentsListEl.innerHTML = '';
+            comments.forEach(comment => {
+                const commentEl = document.createElement('div');
+                commentEl.className = "border-l-4 rtl:border-l-0 rtl:border-r-4 border-blue-600 dark:border-blue-400 bg-gray-50 dark:bg-gray-900 p-4 rounded-r-lg rtl:rounded-r-none rtl:rounded-l-lg";
+                commentEl.innerHTML = `
+                    <div class="flex justify-between items-baseline mb-2">
+                        <span class="font-semibold text-gray-900 dark:text-white">${comment.name}</span>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">${comment.timeAgo}</span>
+                    </div>
+                    <p class="text-gray-800 dark:text-gray-300">${comment.text}</p>
+                `;
+                commentsListEl.appendChild(commentEl);
+            });
+        };
+
+        addCommentBtn.addEventListener('click', () => {
+            if (newCommentInput.value.trim() && newNameInput.value.trim()) {
+                comments.unshift({
+                    name: newNameInput.value,
+                    text: newCommentInput.value,
+                    timeAgo: 'just now'
+                });
+                newNameInput.value = '';
+                newCommentInput.value = '';
+                renderComments();
+            }
+        });
+
+        renderComments();
+    });
+</script>
     <script type="module">
 const postId = new URLSearchParams(window.location.search).get('id');
     const x=document.getElementById('x');
