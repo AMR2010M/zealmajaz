@@ -45,7 +45,7 @@ var myimg=document.getElementById('myimg');
 
     const {error}=  await supabase.from('quran').insert({
 title: title, 
- 
+ author:poem,
 audio: publicUrl ,
 
 
