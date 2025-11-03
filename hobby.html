@@ -113,9 +113,10 @@ else{
    for( const hobby of data){
 
         const myhobby=`
+           <h1 center  tbold tmedium tbp >${hobby.title}</h1>
     <a href='/video.html?id=${hobby.id}'><div  center w-50p h-500 rounded b-blue sblue style='background-image: url(${hobby.img}) ' bg='auto'>
        </div> 
-       <h1 center tbold tsmall>${hobby.title}</h1>
+    
        </a>
          `;
 x.innerHTML+=myhobby;
