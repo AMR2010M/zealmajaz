@@ -19,14 +19,15 @@
  .post{
     width:70%;
  }
- 
   }
  
 
     </style>
 </head>
-<body   style="position: relative;  margin: 0px; padding: 0px;" columns >
-    <ul navbar bp twhite mb-50 class="nav">
+
+<body   style="position: relative;  margin: 0px; padding: 0px; ;" columns >
+    
+        <ul navbar bp twhite mb-50 class="nav">
 
 <h1 tbp message blue-50 p-10  >Mc</h1>
 
@@ -36,7 +37,7 @@
 <a href="/signup.html"twhite tsmall>sign up </a>
     </ul>
     <h1 tbp style="font-size: 40px;" center monospace>zealmajaz</h1>
- <a href="/addsound.html"><button w-300 btn="blue" center tbp  b-blue >upload   audio(not music)</button></a>
+ <a href="/create.html"><button btn="white" center tbp  b-blue >create post</button></a>
 
     <div w-full style="min-height: 100%;" min-h-800 white id="x"  mt-50 >
 <div space></div>
@@ -104,47 +105,21 @@ window.addEventListener('DOMContentLoaded', async () => {
  async function fetchpoems () {
     
 
-const{data,error}=await supabase.from('quran').select('*').order('created_at', { ascending: false });
+const{data,error}=await supabase.from('hobby').select('*').order('created_at', { ascending: false });;
 if(error){
     console.error(error);
 }
 else{
-   for( const quran of data){
-    
+   for( const hobby of data){
 
-  
+        const myhobby=`
+    <div  center w-50p h-500 rounded b-blue sblue style='background-image: url(${hobby.img}) ' bg='auto'>
+       </div> 
+       <h1 center tbold tsmall>${hobby.title}</h1>
+         `;
+x.innerHTML+=myhobby;
+   
 
-    const myaudio=`
-    <div  center w-80p min-h-400  mb-50  columns rounded  gray-100 sblue>
-          <p>${quran.author}بصوت:</p>.
-            
-            <h1 tsmall tblue>${quran.title}</h1>
-    
-
-   <audio controls  w-90p h-80   src='${quran.audio}'id='audio${quran.id}'  ><audio>
-       
-      
-        </div>
-        `;
-x.innerHTML+=myaudio;
-const anybtn = document.querySelectorAll('.pause');
- anybtn.forEach(btn => {
- 
-   document.getElementById(`${btn.id}`).onclick=function(){
-
-if( document.getElementById(`audio${btn.id}`).paused){
- document.getElementById(`audio${btn.id}`).play();
-
-}
-else{
-    document.getElementById(`audio${btn.id}`).pause();
-
-}
-   }
-
-  
-});
- 
 }
 
 }
@@ -153,8 +128,8 @@ else{
  }
  fetchpoems();
 
- 
 
+    
        
 
  x.addEventListener('click', async (event) => {
