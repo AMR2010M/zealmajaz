@@ -42,8 +42,8 @@
     <div w-full style="min-height: 100%;" min-h-800 white id="x"  mt-50 >
 <div space></div>
 
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/OeY1joyISA0?si=7BdpLV1OlJqyEvqt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div><iframe width="560" height="315" src="https://www.youtube.com/embed/d93oCr3iMXk?si=MkX6SA05Erwd-t7u" title="YouTube video player" ></iframe>
+        
+    </div>
    <footer w-full  bp class="  border-t border-gray-200 dark:border-gray-700 transition-colors duration-300" x-data="{ currentYear: new Date().getFullYear() }">
         <div class="max-w-6xl mx-auto px-4 py-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -91,92 +91,58 @@
     </footer><
 </body>
 <script type="module">
-
-    const x = document.getElementById('x');
+const x=document.getElementById('x');
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
     const supabaseUrl = 'https://skhatgfvgvyociqfamsp.supabase.co';
     const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNraGF0Z2Z2Z3Z5b2NpcWZhbXNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5NDY3MjMsImV4cCI6MjA3NTUyMjcyM30.m0L9G26jHf79KNL_YCDNJHS2hWYHuJ4WCzLAHKhj2XI";
 
     const supabase = createClient(supabaseUrl, supabaseKey);
+window.addEventListener('DOMContentLoaded', async () => {
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) window.location.href = '/signin.html';
+});
+ async function fetchpoems () {
+    
 
-    window.addEventListener('DOMContentLoaded', async () => {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (!user) window.location.href = '/signin.html';
-    });
+const{data,error}=await supabase.from('hobby').select('*').order('created_at', { ascending: false });;
+if(error){
+    console.error(error);
+}
+else{
+   for( const hobby of data){
+let link=hobby.video;
+let vid =link.split("=")[1];
+if(!vid){
+    let vid =link.split(".be/")[1];
+}
+        const myhobby=`
+        <iframe  src='https://www.youtube.com/embed/${vid}' frameborder="0" allowfullscreen></iframe>`
+  ;
+x.innerHTML+=myhobby;
+   
 
-    /**
-     * دالة موثوقة لاستخراج معرّف فيديو يوتيوب من أي رابط
-     */
-    function getYoutubeId(url) {
-        if (!url) return null;
-        let videoId = null;
-        // Regex to find the video ID from various YouTube URL formats
-        const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/i;
-        const match = url.match(regex);
-        if (match) {
-            videoId = match[1];
-        }
-        return videoId;
+}
+
+}
+
+ 
+ }
+ fetchpoems();
+
+
+    
+       
+
+ x.addEventListener('click', async (event) => {
+  if (event.target.classList.contains('like')) {
+     const { data:mydata, error } = await supabase.from('poems').select('likes,id').eq('id',event.target.id).single();
+        var updatedlikes=mydata.likes+1;
+const { error: updateError } = await supabase.from('poems').update({likes:updatedlikes }).eq('id', mydata.id);
+document.getElementById('text'+mydata.id).innerText=updatedlikes;
+
     }
-
-    async function fetchpoems() {
-        const { data, error } = await supabase.from('hobby').select('*').order('created_at', { ascending: false });
-
-        if (error) {
-            console.error(error);
-        } else {
-            for (const hobby of data) {
-                let link = hobby.video;
-                
-                // --- هذا هو الجزء الذي تم تعديله ---
-                let vid = getYoutubeId(link); // استخدم الدالة الجديدة
-
-                if (vid) {
-                    // إذا وجدنا معرّف فيديو صالح
-                    // أضفت كلاس "post" الذي عرفته في الـ CSS
-                    // وأضفت ستايل لجعل الفيديو متجاوباً (Responsive)
-                    const myhobby = `
-                        <div class="post" style="margin: 20px auto; max-width: 700px;">
-                            <iframe 
-                                style="width: 100%; aspect-ratio: 16 / 9; border-radius: 8px;" 
-                                src='https://www.youtube.com/embed/${vid}' 
-                                title="YouTube video player"
-                                frameborder="0" 
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                allowfullscreen>
-                            </iframe>
-                        </div>
-                    `;
-                    x.innerHTML += myhobby;
-                } else {
-                    // إذا كان الرابط غير صالح أو لا يمكن تحليله
-                    console.warn('Could not parse YouTube link:', link);
-                    x.innerHTML += `<div class="post" style="margin: 20px auto;"><p style="color: red; text-align: center;">لا يمكن عرض الفيديو، الرابط غير صالح: ${link}</p></div>`;
-                }
-                // --- نهاية الجزء المعدل ---
-            }
-        }
-    }
-
-    fetchpoems();
-
-
-    // --- ملاحظة بخصوص هذا الكود ---
-    // هذا الكود يبحث عن كلاس "like" ويحاول تحديث جدول "poems"
-    // لكن الدالة fetchpoems() تبني صفحتك من جدول "hobby"
-    // هذا الكود لن يعمل لأنه لا يجد أي شيء ليضغط عليه
-    // ستحتاج إلى تعديله ليتناسب مع البيانات من جدول "hobby"
-    x.addEventListener('click', async (event) => {
-        if (event.target.classList.contains('like')) {
-            console.log('Like button clicked, but this code is for "poems" table.');
-            // const { data:mydata, error } = await supabase.from('poems').select('likes,id').eq('id',event.target.id).single();
-            // var updatedlikes=mydata.likes+1;
-            // const { error: updateError } = await supabase.from('poems').update({likes:updatedlikes }).eq('id', mydata.id);
-            // document.getElementById('text'+mydata.id).innerText=updatedlikes;
-        }
-    });
-
+  }
+ );
 </script>
-
 </html>
