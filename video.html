@@ -103,22 +103,30 @@ window.addEventListener('DOMContentLoaded', async () => {
   if (!user) window.location.href = '/signin.html';
 });
  async function fetchpoems () {
-    
+    const id =  (new URLSearchParams(window.location.search)).get('id');
 
-const{data,error}=await supabase.from('hobby').select('*').order('created_at', { ascending: false });;
+const{data,error}=await supabase.from('hobby').select('*').eq('id',id).single();
 if(error){
     console.error(error);
 }
 else{
-   for( const hobby of data){
+  let hobby=data;
 let link=hobby.video;
 let vid =link.split("=")[1];
 if(!vid){
     let vid =link.split(".be/")[1];
 }
         const myhobby=`
-        <iframe  src='https://www.youtube.com/embed/${vid}' frameborder="0" allowfullscreen></iframe>`
-  ;
+        <h1 center tbp tbold >${hobby.title}</h1>
+        
+        <iframe center w-80p h-400  b-blue src='https://www.youtube.com/embed/${vid}' frameborder="0"  b-blue ></iframe>
+        <p>${hobby.details}</p>
+        
+        
+        
+        
+        ` ;
+
 x.innerHTML+=myhobby;
    
 
@@ -127,7 +135,7 @@ x.innerHTML+=myhobby;
 }
 
  
- }
+
  fetchpoems();
 
 
