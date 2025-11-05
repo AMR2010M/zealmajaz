@@ -44,7 +44,7 @@ const API_KEY = "AIzaSyC1Dvh3GDuiwmryzwFTv-NpcYu9zDNinR8";
         
         async function generateContent() {
             
-           var prompt=`plss just say 'SAFE' without any other letter or explain why itsn't safe if its not safe here is the post:{'${poem}'}  plss respond according to the below rules:
+           var prompt=`plss just respond with the word  'SAFE' without quotes with capital letters without any other letter  if its safe or explain why itsn't safe if its not safe here is the post:{'${poem}'}  plss respond according to the below rules:
     
     1:nothing haram at at all in islam
     2:no insults
@@ -52,39 +52,40 @@ const API_KEY = "AIzaSyC1Dvh3GDuiwmryzwFTv-NpcYu9zDNinR8";
     4:it must have value not just some letters
     5:its not waste of time 
     6:letters  are more than 10`;
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
-            
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        contents: [{ role: "user", parts: [{ text: prompt }] }]
-                    })
-                });
+           const apiKey = "AIzaSyAVDSU27FDw2ir0e6STg3hbZUN98Zy3RVo"; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+ const generationConfig = {
+                
+                temperature: 1.0, 
+            };
+            const chatHistory = [{ 
+                role: "user", 
+                parts: [{ text: prompt }] 
+            }];
 
+            const payload = { 
+                contents: chatHistory 
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
                 if (!response.ok) {
-                    // Check for non-200 status codes
-                    const errorData = await response.json();
-                    throw new Error(`API Error: ${response.status} - ${errorData.error.message}`);
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
-                const data = await response.json();
-                
-                // Extract the generated text
-                const text = data.candidates[0].content.parts[0].text;
-                return text;
-                
-            
-            } catch (error) {
-                console.error("Fetch error:", error);
-                var xerror = `Error: ${error.message}`;
-                alert(xerror);
-            }
-       const ISSAFE = await generateContent();
-if(ISSAFE=='SAFE'){
+                const result = await response.json();
+
+             
+                if (result.candidates && result.candidates.length > 0 && 
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                 if(text=='SAFE'){
    
  const {error:imgerror} = await supabase.storage.from('imgs').upload(`public/${file.name}`,file,{ cacheControl: '3600',  upsert: true, });
  if(imgerror){alert(imgerror)}
@@ -108,9 +109,24 @@ img: publicUrl ,
     }
 }
 }
-else{alert(ISSAFE)}
- }
+else{alert(text)}
+                    
+                } else {
+                    mytext.innerText = "فشل في الحصول على إجابة. يرجى المحاولة مرة أخرى.";
+                    console.error("Unexpected API response structure:", result);
+                }
 
-}
+            } catch (error) {
+                console.error('Error:', error);
+                mytext.innerText = `حدث خطأ: ${error.message}`;
+            } finally {
+               
+            }
+    
+
+
+ }
+generateContent();
+    }
 </script>
 </html>
