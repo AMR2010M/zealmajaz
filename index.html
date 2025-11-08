@@ -41,17 +41,17 @@
         </a>
 
         <div class="hidden md:flex items-center gap-8 transition duration-500">
+            <a href="/community.html" class="hover:text-slate-500 transition">
+           community
+            </a>
+            <a href="/quran.html" class="hover:text-slate-500 transition">
+                quran 
+            </a>
+            <a href="/hobby.html" class="hover:text-slate-500 transition">
+                articles
+            </a>
             <a href="/" class="hover:text-slate-500 transition">
-                Home
-            </a>
-            <a href="/products" class="hover:text-slate-500 transition">
-                Products
-            </a>
-            <a href="/stories" class="hover:text-slate-500 transition">
-                Stories
-            </a>
-            <a href="/pricing" class="hover:text-slate-500 transition">
-                Pricing
+                about
             </a>
         </div>
 
@@ -232,6 +232,32 @@
 
     openMenu.addEventListener("click", openMenuHandler);
     closeMenu.addEventListener("click", closeMenuHandler);
+    let devtoolsOpen = false;
+
+setInterval(() => {
+    const widthThreshold = window.outerWidth - window.innerWidth > 100;
+    const heightThreshold = window.outerHeight - window.innerHeight > 100;
+    if (widthThreshold || heightThreshold) {
+        if (!devtoolsOpen) {
+            devtoolsOpen = true;
+        }
+    } else {
+        devtoolsOpen = false;
+    }
+}, 1000);
+document.addEventListener('keydown', function(e) {
+    // Check if Ctrl (or Cmd) + U is pressed
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'u') {
+        e.preventDefault();  // Stop the default action
+       
+    }
+});
+document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+       
+    }
+});
 </script>
 
 

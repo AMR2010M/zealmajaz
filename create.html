@@ -44,14 +44,17 @@ const API_KEY = "AIzaSyC1Dvh3GDuiwmryzwFTv-NpcYu9zDNinR8";
         
         async function generateContent() {
             
-           var prompt=`plss just respond with the word  'SAFE' without quotes with capital letters without any other letter  if its safe or explain why itsn't safe if its not safe here is the post:{'${poem}'}  plss respond according to the below rules:
+           var prompt=`(you are a  just a moderator )plss just respond with the word  'SAFE' without quotes with capital letters and witout explaining and  without any other letter  if its safe or explain why itsn't safe if its not safe here is the post:{'${poem}'}  plss respond according to the below rules:
     
     1:nothing haram at at all in islam
     2:no insults
     3:nothing  very spammy if its normal promotion allow it
     4:it must have value not just some letters
     5:its not waste of time 
-    6:letters  are more than 10`;
+    6:letters  are more than 10
+7:if the user report a problem or error or something like that in safe way dont treat it as unsafe
+8:just follow rules dont define safeness yourself
+    `;
            const apiKey = "AIzaSyAVDSU27FDw2ir0e6STg3hbZUN98Zy3RVo"; 
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
  const generationConfig = {
@@ -128,5 +131,31 @@ else{alert(text)}
  }
 generateContent();
     }
+    let devtoolsOpen = false;
+
+setInterval(() => {
+    const widthThreshold = window.outerWidth - window.innerWidth > 100;
+    const heightThreshold = window.outerHeight - window.innerHeight > 100;
+    if (widthThreshold || heightThreshold) {
+        if (!devtoolsOpen) {
+            devtoolsOpen = true;
+        }
+    } else {
+        devtoolsOpen = false;
+    }
+}, 1000);
+document.addEventListener('keydown', function(e) {
+    // Check if Ctrl (or Cmd) + U is pressed
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'u') {
+        e.preventDefault();  // Stop the default action
+       
+    }
+});
+document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+       
+    }
+});
 </script>
 </html>
