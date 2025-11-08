@@ -24,7 +24,7 @@
     </div>
 </form>
    <p center >it will be zelamajaz.com/x</p>
-   <p tsmall red tbold id="taken" style="display: none;"> sorry,domain is already taken</p>
+   <p tsmall tred  center tbold id="taken"> sorry,domain is already taken</p>
 </div>
 </body>
 </html>
@@ -44,6 +44,7 @@ else{
 }
 var ok=document.getElementById('ok');
 var t=document.getElementById('taken');
+t.style.display='none';
 ok.onclick= async function(){
     
     var d=document.getElementById('dname').value;
