@@ -120,7 +120,7 @@ if(!vid){
         <h1 tmedium center tbp tbold >${hobby.title}</h1>
         
         <iframe width="80%" height="500" src="https://www.youtube.com/embed/${vid}" center b-blue rounded title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        <p center tsmall w-80p m-20 >${hobby.details}</p>
+        <p center tsmall w-80p m-20 style='white-space: pre-wrap; ' >${hobby.details}</p>
         
         
         
@@ -139,7 +139,10 @@ x.innerHTML+=myhobby;
  fetchpoems();
 
 
-    
+      document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+ 
+});
        
 
  x.addEventListener('click', async (event) => {

@@ -144,6 +144,10 @@ document.getElementById('text'+mydata.id).innerText=updatedlikes;
     }
   }
  );
+   document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+ 
+});
  let devtoolsOpen = false;
 
 setInterval(() => {
