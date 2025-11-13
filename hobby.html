@@ -37,9 +37,9 @@
 <a href="/signup.html"twhite tsmall>sign up </a>
     </ul>
     <h1 tbp style="font-size: 40px;" center monospace>zealmajaz</h1>
- <a href="/createhobby.html"><button btn="white" center tbp  b-blue >create video article</button></a>
+<a  href="/createhobby.html" class="text-white bg-brand hover:bg-brand-strong box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium rounded-base text-base px-6 py-3.5 focus:outline-none">create article</a>
 
-    <div w-full style="min-height: 100%;" min-h-800 white id="x"  mt-50 >
+    <div w-full style="min-height: 100%;" min-h-800 white id="x"  mt-50  >
 <div space></div>
 
         
@@ -113,11 +113,12 @@ else{
    for( const hobby of data){
 
         const myhobby=`
-           <h1 center  tbold tmedium tbp  rounded tshadow >${hobby.title}</h1>
+        <h1 center   w-80p  style="font-size: 50px;"    >${hobby.title}</h1>
     <a href='/video.html?id=${hobby.id}' center   >  
         <div  w-80p  h-500  center  rounded b-blue mb-50 sblue style="background-image:url('${hobby.img}');margin-bottom:80px "; bg='auto'></div> 
     
        </a>
+          
          `;
 x.innerHTML+=myhobby;
    

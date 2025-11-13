@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/AMR2010M/butterfly-css@latest/attributes.css">
+</head>
+<body body>
+   <section class="bg-gray-100 py-8">
+  <div class="container mx-auto px-4">
+    <h2 class="text-2xl font-bold mb-4"> Comments</h2>
+
+    <div class="space-y-4">
+      <!-- Comment 1 -->
+      <div class="bg-white p-4 rounded-lg shadow">
+        <div class="flex items-center mb-2">
+          <img src="https://via.placeholder.com/40" alt="User Avatar" class="w-10 h-10 rounded-full mr-3">
+          <div>
+            <h3 class="font-semibold">John Doe</h3>
+            <p class="text-sm text-gray-500">Posted on March 15, 2024</p>
+          </div>
+        </div>
+        <p class="text-gray-700">Great product! I've been using it for a week now and I'm very satisfied with its
+          performance.</p>
+        <div class="flex items-center mt-2">
+          <button class="text-blue-500 hover:text-blue-600 mr-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+            </svg>
+            Like
+          </button>
+          <button class="text-gray-500 hover:text-gray-600">Reply</button>
+        </div>
+      </div>
+
+      <!-- Comment 2 -->
+      <div class="bg-white p-4 rounded-lg shadow">
+        <div class="flex items-center mb-2">
+          <img src="https://via.placeholder.com/40" alt="User Avatar" class="w-10 h-10 rounded-full mr-3">
+          <div>
+            <h3 class="font-semibold">Jane Smith</h3>
+            <p class="text-sm text-gray-500">Posted on March 10, 2024</p>
+          </div>
+        </div>
+        <p class="text-gray-700">The shipping was fast and the product arrived in perfect condition. Highly recommended!
+        </p>
+        <div class="flex items-center mt-2">
+          <button class="text-blue-500 hover:text-blue-600 mr-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+            </svg>
+            Like
+          </button>
+          <button class="text-gray-500 hover:text-gray-600">Reply</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Comment Form -->
+    <form class="mt-8 bg-white p-4 rounded-lg shadow">
+      <h3 class="text-lg font-semibold mb-2">Add a Comment</h3>
+      <div class="mb-4">
+        <label for="name" class="block text-gray-700 font-medium mb-2">Name</label>
+        <input type="text" id="name" name="name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+      </div>
+      <div class="mb-4">
+        <label for="comment" class="block text-gray-700 font-medium mb-2">Comment</label>
+        <textarea id="comment" name="comment" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+      </div>
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+        Post Comment
+      </button>
+    </form>
+  </div>
+</section>
+</body>
+<script type="module">
+var submit=document.getElementById('submit');
+
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+    const supabaseUrl = 'https://skhatgfvgvyociqfamsp.supabase.co';
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNraGF0Z2Z2Z3Z5b2NpcWZhbXNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk5NDY3MjMsImV4cCI6MjA3NTUyMjcyM30.m0L9G26jHf79KNL_YCDNJHS2hWYHuJ4WCzLAHKhj2XI";
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    const {data:{user}}= await supabase.auth.getUser();
+    if(user){
+    console.log('hello'+user);
+}
+else{
+    window.location.href="/signin";
+}
+submit.onclick= async function(){
+     var poem=document.getElementById('poem').value;
+var title=document.getElementById('title').value;
+var myimg=document.getElementById('myimg');
+ const file = myimg.files[0];
+
+
+
+const API_KEY = "AIzaSyC1Dvh3GDuiwmryzwFTv-NpcYu9zDNinR8"; 
+        
+        async function generateContent() {
+            
+           var prompt=`(you are a  just a moderator )plss just respond with the word  'SAFE' without quotes with capital letters and witout explaining and  without any other letter  if its safe or explain why itsn't safe if its not safe here is the post:{'${poem}'}  plss respond according to the below rules:
+    
+    1:nothing haram at at all in islam
+    2:no insults
+    3:nothing  very spammy if its normal promotion allow it
+    4:it must have value not just some letters
+    5:its not waste of time 
+    6:letters  are more than 10
+7:if the user report a problem or error or something like that in safe way dont treat it as unsafe
+8:just follow rules dont define safeness yourself
+    `;
+           const apiKey = "AIzaSyAVDSU27FDw2ir0e6STg3hbZUN98Zy3RVo"; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+ const generationConfig = {
+                
+                temperature: 1.0, 
+            };
+            const chatHistory = [{ 
+                role: "user", 
+                parts: [{ text: prompt }] 
+            }];
+
+            const payload = { 
+                contents: chatHistory 
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+             
+                if (result.candidates && result.candidates.length > 0 && 
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                 if(text=='SAFE'){
+   
+ const {error:imgerror} = await supabase.storage.from('imgs').upload(`public/${file.name}`,file,{ cacheControl: '3600',  upsert: true, });
+ if(imgerror){alert(imgerror)}
+
+ else{const {data:{ publicUrl }} = supabase.storage.from('imgs').getPublicUrl(`public/${file.name}`);
+
+    const {error}=  await supabase.from('poems').insert({
+title: title, 
+poem: poem,
+ user_id: user.id,
+img: publicUrl ,
+ author:user.email
+
+    });
+    if(error){
+        alert(error);
+
+    }
+    else{
+        window.location.href="/community.html";
+    }
+}
+}
+else{alert(text)}
+                    
+                } else {
+                    mytext.innerText = "فشل في الحصول على إجابة. يرجى المحاولة مرة أخرى.";
+                    console.error("Unexpected API response structure:", result);
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                mytext.innerText = `حدث خطأ: ${error.message}`;
+            } finally {
+               
+            }
+    
+
+
+ }
+generateContent();
+    }
+      document.addEventListener('contextmenu', function(e) {
+  e.preventDefault();
+ 
+});
+    let devtoolsOpen = false;
+
+setInterval(() => {
+    const widthThreshold = window.outerWidth - window.innerWidth > 100;
+    const heightThreshold = window.outerHeight - window.innerHeight > 100;
+    if (widthThreshold || heightThreshold) {
+        if (!devtoolsOpen) {
+            devtoolsOpen = true;
+        }
+    } else {
+        devtoolsOpen = false;
+    }
+}, 1000);
+document.addEventListener('keydown', function(e) {
+    // Check if Ctrl (or Cmd) + U is pressed
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'u') {
+        e.preventDefault();  // Stop the default action
+       
+    }
+});
+document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+       
+    }
+});
+</script>
+</html>
